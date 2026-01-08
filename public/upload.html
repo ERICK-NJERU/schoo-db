@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Exam Results</title>
+</head>
+<body>
+
+<h2>Upload Class Results</h2>
+
+<form id="uploadForm">
+  <label>Year:</label><br>
+  <input type="number" name="year" value="2024" required><br><br>
+
+  <label>Term:</label><br>
+  <input type="text" name="term" value="Term 2" required><br><br>
+
+  <label>Exam Type:</label><br>
+  <select name="exam_type">
+    <option value="cat">CAT</option>
+    <option value="endterm" selected>End Term</option>
+  </select><br><br>
+
+  <label>Class ID:</label><br>
+  <input type="number" name="class_id" value="1" required><br><br>
+
+  <label>Excel File:</label><br>
+  <input type="file" name="file" accept=".xlsx,.xls" required><br><br>
+
+  <button type="submit">Upload Results</button>
+</form>
+
+<p id="status"></p>
+
+<script>
+document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+  e.preventDefault(); // 🚨 THIS STOPS THE ENDLESS SEARCH
+
+  const status = document.getElementById("status");
+  status.innerText = "Uploading...";
+
+  const formData = new FormData(this);
+
+  try {
+    const res = await fetch("/upload-results", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+    status.innerText = data.message;
+  } catch (err) {
+    status.innerText = "Upload failed";
+    console.error(err);
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CBC Academic Report Card</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+/* ======= ORIGINAL DESIGN (UNCHANGED) ======= */
+:root {
+  --primary-blue: #1a237e;
+  --secondary-blue: #283593;
+  --accent-gold: #ffb300;
+  --light-blue: #e8eaf6;
+  --dark-gray: #333;
+  --success-green: #2e7d32;
+  --warning-orange: #f57c00;
+  --danger-red: #c62828;
+  --radius: 8px;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #fff;
+  padding: 20px;
+  color: #333;
+}
+
+.report-card {
+  max-width: 210mm;
+  margin: auto;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 3px double var(--primary-blue);
+  padding-bottom: 15px;
+}
+
+.school-crest {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--primary-blue);
+}
+
+.school-info {
+  flex: 1;
+  text-align: center;
+}
+
+.school-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-blue);
+}
+
+.school-motto {
+  color: var(--accent-gold);
+  font-style: italic;
+}
+
+.report-title {
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+.student-box {
+  background: #f5f6f8;
+  padding: 15px;
+  border-radius: var(--radius);
+  margin: 20px 0;
+}
+
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.label {
+  font-size: 11px;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.value {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.performance-table th {
+  background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+  color: #fff;
+  padding: 10px;
+  font-size: 12px;
+}
+
+.performance-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.subject-name {
+  text-align: left;
+  font-weight: 600;
+}
+
+.cbc-level {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.level-EE { background:#e8f5e9;color:var(--success-green); }
+.level-ME { background:#e3f2fd;color:var(--primary-blue); }
+.level-AE { background:#fff3e0;color:var(--warning-orange); }
+.level-BE { background:#ffebee;color:var(--danger-red); }
+
+.cbc-points {
+  font-weight: 700;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.summary-box {
+  background: #f9f9f9;
+  padding: 12px;
+  border-left: 4px solid var(--accent-gold);
+}
+
+.footer {
+  margin-top: 25px;
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+}
+
+@media print {
+  body { padding: 0; }
+  .report-card { page-break-after: always; }
+  .report-card:last-child { page-break-after: auto; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="printArea">
+
+  <div class="report-card">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="school-crest">SCHOOL<br>CREST</div>
+      <div class="school-info">
+        <div class="school-name">NKUENE GIRLS' HIGH SCHOOL</div>
+        <div class="school-motto">Rising towards excellence</div>
+        <div class="report-title">CBC ACADEMIC REPORT CARD</div>
+        <div>Term <span class="term"></span>, <span class="year"></span></div>
+      </div>
+    </div>
+
+    <!-- STUDENT INFO -->
+    <div class="student-box">
+      <div class="student-grid">
+        <div>
+          <div class="label">Admission Number</div>
+          <div class="value admNo"></div>
+        </div>
+        <div>
+          <div class="label">Assessment Number</div>
+          <div class="value assessmentNo"></div>
+        </div>
+        <div>
+          <div class="label">Student Name</div>
+          <div class="value studentName"></div>
+        </div>
+        <div>
+          <div class="label">Class</div>
+          <div class="value className"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBJECT PERFORMANCE -->
+    <h3>SUBJECT PERFORMANCE</h3>
+    <table class="performance-table">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Mid Term (CAT)</th>
+          <th>End Term</th>
+          <th>CBC Level</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody class="subjectsTableBody"></tbody>
+    </table>
+
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="summary-box">
+        <div class="label">Total CBC Points</div>
+        <div class="totalPoints"></div>
+      </div>
+      <div class="summary-box">
+        <div class="label">Position in Class</div>
+        <div class="classRank"></div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      Official school report • Valid with stamp and signature
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+/* ============ CBC GRADING ============ */
+const CBC_GRADING = [
+  { min: 90, max: 100, code: 'EE1', points: 8, cls: 'level-EE' },
+  { min: 75, max: 89,  code: 'EE2', points: 7, cls: 'level-EE' },
+  { min: 58, max: 74,  code: 'ME1', points: 6, cls: 'level-ME' },
+  { min: 41, max: 57,  code: 'ME2', points: 5, cls: 'level-ME' },
+  { min: 31, max: 40,  code: 'AE1', points: 4, cls: 'level-AE' },
+  { min: 21, max: 30,  code: 'AE2', points: 3, cls: 'level-AE' },
+  { min: 11, max: 20,  code: 'BE1', points: 2, cls: 'level-BE' },
+  { min: 1,  max: 10,  code: 'BE2', points: 1, cls: 'level-BE' }
+];
+
+function getCBC(score) {
+  return CBC_GRADING.find(g => score >= g.min && score <= g.max) || CBC_GRADING.at(-1);
+}
+
+/* ============ PARAMS ============ */
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    adm: p.get('adm'),
+    classId: p.get('classId'),
+    year: p.get('year'),
+    term: p.get('term')
+  };
+}
+
+/* ============ ADAPTER ============ */
+function adapt(rows) {
+  const f = rows[0];
+
+  const subjects = rows.map(r => {
+    const score = Number(r.weighted_score);
+    const cbc = getCBC(score);
+    return {
+      name: r.subject_name || '',
+      mid: r.cat_marks,
+      end: r.endterm_marks,
+      code: cbc.code,
+      points: cbc.points,
+      cls: cbc.cls
+    };
+  });
+
+  return {
+    adm: f.adm_no,
+    name: f.student_name,
+    assessment: `ASS-${f.year}-T${f.term}-${f.adm_no}`,
+    className: `Form ${f.class_id}${f.stream_name ? ' - ' + f.stream_name : ''}`,
+    term: f.term,
+    year: f.year,
+    rank: f.class_rank,
+    totalPoints: subjects.reduce((s, x) => s + x.points, 0),
+    subjects
+  };
+}
+
+/* ============ RENDER ============ */
+function render(card, m) {
+  card.querySelector('.admNo').textContent = m.adm;
+  card.querySelector('.studentName').textContent = m.name;
+  card.querySelector('.assessmentNo').textContent = m.assessment;
+  card.querySelector('.className').textContent = m.className;
+  card.querySelector('.term').textContent = m.term;
+  card.querySelector('.year').textContent = m.year;
+  card.querySelector('.totalPoints').textContent = m.totalPoints;
+  card.querySelector('.classRank').textContent = m.rank;
+
+  const tbody = card.querySelector('.subjectsTableBody');
+  tbody.innerHTML = '';
+
+  m.subjects.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="subject-name">${s.name}</td>
+      <td>${s.mid}</td>
+      <td>${s.end}</td>
+      <td><span class="cbc-level ${s.cls}">${s.code}</span></td>
+      <td class="cbc-points">${s.points}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ============ INIT ============ */
+(async function () {
+  const { adm, classId, year, term } = getParams();
+  if (!year || !term || (!adm && !classId)) {
+    alert('Missing URL parameters');
+    return;
+  }
+
+  const url = classId
+    ? `http://localhost:3000/report/class/${classId}/${year}/${term}`
+    : `http://localhost:3000/report/student/${adm}/${year}/${term}`;
+
+  const res = await fetch(url);
+  const rows = await res.json();
+
+  if (!rows.length) {
+    alert('No data found');
+    return;
+  }
+
+  const printArea = document.getElementById('printArea');
+  const template = document.querySelector('.report-card');
+  printArea.innerHTML = '';
+
+  const grouped = classId
+    ? Object.values(rows.reduce((m, r) => {
+        (m[r.student_id] ||= []).push(r);
+        return m;
+      }, {}))
+    : [rows];
+
+  grouped.forEach(studentRows => {
+    const clone = template.cloneNode(true);
+    printArea.appendChild(clone);
+    render(clone, adapt(studentRows));
+  });
+})();
+</script>
+
+</body>
+</html>
